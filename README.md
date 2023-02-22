@@ -1,5 +1,4 @@
 # Cost of living
-Week 2 Task at @ The Chance plus 2023
 
 - As a team Leader fork this repository into your personal github account then add all of your teammates as a contributors
 - Using the provided parsed data csv data set
