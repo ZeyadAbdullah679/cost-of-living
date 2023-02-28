@@ -2,28 +2,30 @@ package interactor
 
 import model.CityEntity
 
-
+private var temp=0.toFloat()
+private var destination:CityEntity?=null
 class Consumption (private val dataSource: CostOfLivingDataSource){
 
-    fun execute(): CityEntity {
-         val x: MutableMap<Float,MutableList<CityEntity>> = mutableMapOf()
+    val execute ={
          this.dataSource
             .getAllCitiesData()
-            .filter(::excludeNullOrZeroValue)
-            .forEach {
-             val remainder= remainder(it)
-             if(remainder>(250).toFloat()){
-                 if (x.contains(remainder)) x[remainder]?.add(it)
-                 else x[remainder] = mutableListOf(it)
-             }
-         }
-        return x.toSortedMap()
-            .values
-            .last()[0]
+            .forEach { check(it) }
+        destination
     }
 }
-private fun excludeNullOrZeroValue(city: CityEntity): Boolean {
-    return !(city.averageMonthlyNetSalaryAfterTax == null
+private fun check(city: CityEntity){
+    if (!isThereNullValue(city))
+    {val remainder= remainder(city)
+        if(remainder>(250).toFloat()){
+            if(remainder> temp){
+                temp=remainder
+                destination=city
+            }
+        }
+    }
+}
+private fun isThereNullValue(city: CityEntity): Boolean {
+    return (city.averageMonthlyNetSalaryAfterTax == null
             || city.realEstatesPrices.apartment3BedroomsOutsideOfCentre == null
             || city.foodPrices.riceWhite1kg == null
             || city.foodPrices.chickenFillets1kg == null
