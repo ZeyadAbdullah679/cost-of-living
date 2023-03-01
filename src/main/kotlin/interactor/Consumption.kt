@@ -5,15 +5,16 @@ import model.CityEntity
 private var temp=0.toFloat()
 private var destination:CityEntity?=null
 class Consumption (private val dataSource: CostOfLivingDataSource){
-
-    val execute ={
-         this.dataSource
-            .getAllCitiesData()
-            .forEach { check(it) }
-        destination
-    }
+    fun execute(): CityEntity{return check(dataSource)}
 }
-private fun check(city: CityEntity){
+private fun check( dataSource: CostOfLivingDataSource):CityEntity{
+    dataSource
+        .getAllCitiesData()
+        .forEach { calculation(it) }
+    return destination!!
+
+}
+private fun calculation(city: CityEntity){
     if (!isThereNullValue(city))
     {val remainder= remainder(city)
         if(remainder>(250).toFloat()){
